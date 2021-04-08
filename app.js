@@ -5,6 +5,7 @@ import cors from 'cors';
 import usersRouter from './controllers/users.controller.js';
 import mongoose from 'mongoose';
 import storagesRouter from './controllers/storages.controller.js';
+import itemsRouter from './controllers/items.controller.js';
 
 mongoose.connect(process.env.MONGODB_URI,
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -21,5 +22,6 @@ app.use(express.json());
 
 app.use('/api/users', usersRouter);
 app.use('/api/storages', storagesRouter);
+app.use('/api/items', itemsRouter);
 
 export default app;
