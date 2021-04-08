@@ -1,0 +1,1 @@
+import Storage from '../models/storage.model';
