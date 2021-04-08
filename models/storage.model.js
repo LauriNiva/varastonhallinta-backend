@@ -6,10 +6,10 @@ const storageSchema = new mongoose.Schema({
     required: true
   },
   items: [{
-    itemName: {type: String, required: true},
-    category: {type: String, required: true},
+    itemName: { type: String, required: true },
+    category: { type: String, required: true },
     stock: Number
   }]
 });
 
-export default storageSchema;
+export default mongoose.model('Storage', storageSchema);
