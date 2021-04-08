@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
     requred: true,
     minlenght: 5
   },
-  storages: [{ type: Schema.Types.ObjectId, ref: 'Storage' }],
-  items: [{ type: Schema.Types.ObjectId, ref: 'Item'}]
+  storages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Storage' }],
+  items: [{ type:  mongoose.Schema.Types.ObjectId, ref: 'Item'}]
 });
 
-export default userSchema;
+export default mongoose.model('User', userSchema);

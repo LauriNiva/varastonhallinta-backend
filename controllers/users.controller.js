@@ -1,9 +1,9 @@
-import User from '../models/user.model'; 
+import User from '../models/user.model.js'; 
 import express, { Router } from 'express';
 
-const userRouter = express.Router();
+const usersRouter = express.Router();
 
-userRouter.get('/:name', (req, res) => {
+usersRouter.get('/:name', (req, res) => {
   User
   .findOne({ name: req.params.name})
   .then(user => {
@@ -11,4 +11,4 @@ userRouter.get('/:name', (req, res) => {
   });
 });
 
-export default userRouter;
+export default usersRouter;
