@@ -24,18 +24,23 @@ storagesRouter.get('/user/:userid', (req, res) => {
   });
 });
 
-storagesRouter.get('/array/', (req, res) => {
-  const ArrayOfStorageIds = req.body;
+storagesRouter.put('/stock/:id', (req, res) => {
 
+  const itemIndex = req.body.itemIndex;
+  const newStock = {stock: req.body.newStock};
 
-  // Storage
-  //   .find()
-  //   .where('_id')
-  //   .in(ArrayOfStorageIds)
-  //   .exec()
-  //   .then(storages => {
-  //     res.json(storages);
-  //   });
+  const query = {};
+  query[`items.${itemIndex}.stock`] = 1;
+
+  console.log('q', query);
+
+  Storage.
+  findByIdAndUpdate(req.params.id, { $inc: query }, { new: true })
+  .then(updatedStorage =>{
+   console.log('u: ',updatedStorage)
+   res.json(updatedStorage)
+  });
+
 });
 
 export default storagesRouter;
