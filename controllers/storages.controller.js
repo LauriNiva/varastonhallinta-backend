@@ -27,10 +27,10 @@ storagesRouter.get('/user/:userid', (req, res) => {
 storagesRouter.put('/stock/:id', (req, res) => {
 
   const itemIndex = req.body.itemIndex;
-  const newStock = {stock: req.body.newStock};
+  const newStock = req.body.newStock;
 
   const query = {};
-  query[`items.${itemIndex}.stock`] = 1;
+  query[`items.${itemIndex}.stock`] = newStock;
 
   console.log('q', query);
 
