@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const itemSchema = new mongoose.Schema({
+  itemcode: {
+    type: String,
+    minlenght: 3
+  },
   name: {
     type: String,
     requred: true,

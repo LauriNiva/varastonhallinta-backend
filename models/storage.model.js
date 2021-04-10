@@ -6,7 +6,8 @@ const storageSchema = new mongoose.Schema({
     required: true
   },
   items: [{
-    itemName: { type: String, required: true },
+    itemcode: { type: String},
+    name: { type: String, required: true },
     category: { type: String, required: true },
     stock: Number
   }]

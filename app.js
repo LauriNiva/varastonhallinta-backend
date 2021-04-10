@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URI,
     console.log('error conneting to db: ', error.message);
   })
 
-
+  
 app.use(cors());
 app.use(express.json());
 
