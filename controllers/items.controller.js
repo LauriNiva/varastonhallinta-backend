@@ -24,4 +24,20 @@ itemsRouter.get('/user/:userid', (req, res) => {
 
 });
 
+itemsRouter.post('/single/:id', (req, res) => {
+  const body = req.body;
+
+  const newItem = new Item({
+    itemcode: body.itemcode,
+    name: body.name,
+    category: body.category
+  });
+
+  newItem.save()
+  .then(savedItem => {
+    res.json(savedItem);
+  });
+  
+});
+
 export default itemsRouter;
