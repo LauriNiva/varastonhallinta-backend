@@ -11,4 +11,14 @@ usersRouter.get('/:name', (req, res) => {
     });
 });
 
+usersRouter.put('/:id', (req, res) => {
+
+
+  const newItem = req.body._id;
+
+  User
+    .findByIdAndUpdate(req.params.id, { $push: { items: newItem } }, { new: true })
+    .then(updatedUser => res.json(updatedUser))
+})
+
 export default usersRouter;
