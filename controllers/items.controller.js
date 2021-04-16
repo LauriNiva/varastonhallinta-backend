@@ -24,7 +24,9 @@ itemsRouter.get('/user/:userid', (req, res) => {
 
 });
 
-itemsRouter.post('/single/:id', (req, res) => {
+itemsRouter.post('/single/', (req, res) => {
+
+
   const body = req.body;
 
   const newItem = new Item({
@@ -32,6 +34,7 @@ itemsRouter.post('/single/:id', (req, res) => {
     name: body.name,
     category: body.category
   });
+
 
   newItem.save()
   .then(savedItem => {
