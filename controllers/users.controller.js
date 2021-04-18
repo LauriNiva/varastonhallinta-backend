@@ -12,13 +12,21 @@ usersRouter.get('/:name', (req, res) => {
 });
 
 usersRouter.put('/:id', (req, res) => {
-
-
   const newItem = req.body._id;
 
   User
     .findByIdAndUpdate(req.params.id, { $push: { items: newItem } }, { new: true })
     .then(updatedUser => res.json(updatedUser))
+});
+
+usersRouter.delete('/items/:id/:itemid', (req, res) => {
+  console.log('usersItemDelete-id: ', req.params.id);
+  console.log('usersItemDelete-itemid: ', req.params.itemid);
+
+  User
+    .findByIdAndUpdate(req.params.id, { $pull: { items: req.params.itemid  } })
+    .then(() => res.status(204).end())
+
 })
 
 export default usersRouter;

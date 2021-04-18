@@ -13,19 +13,17 @@ itemsRouter.get('/single/:id', (req, res) => {
 
 itemsRouter.get('/user/:userid', (req, res) => {
   User.findById(req.params.userid)
-  .then(user => {
-    Item
-    .find()
-    .where('_id')
-    .in(user.items)
-    .exec()
-    .then(items => res.json(items));
-  });
-
+    .then(user => {
+      Item
+        .find()
+        .where('_id')
+        .in(user.items)
+        .exec()
+        .then(items => res.json(items));
+    });
 });
 
 itemsRouter.post('/single/', (req, res) => {
-
 
   const body = req.body;
 
@@ -35,12 +33,15 @@ itemsRouter.post('/single/', (req, res) => {
     category: body.category
   });
 
-
   newItem.save()
-  .then(savedItem => {
-    res.json(savedItem);
-  });
-  
+    .then(savedItem => {
+      res.json(savedItem);
+    });
+});
+
+itemsRouter.delete('/single/:id', (req, res) => {
+  Item.findByIdAndDelete(req.params.id)
+    .then(() => res.status(204).end())
 });
 
 export default itemsRouter;
