@@ -12,16 +12,30 @@ storagesRouter.get('/single/:id', (req, res) => {
     .catch();
 });
 
+storagesRouter.post('/single', (req, res) => {
+  const body = req.body;
+
+  const newStorage = new Storage({
+    name: body.name
+  });
+
+  newStorage.save()
+    .then(savedStorage => {
+      res.json(savedStorage);
+    });
+
+});
+
 storagesRouter.get('/user/:userid', (req, res) => {
   User.findById(req.params.userid)
-  .then(user => {
-    Storage
-    .find()
-    .where('_id')
-    .in(user.storages)
-    .exec()
-    .then(storages => res.json(storages));
-  });
+    .then(user => {
+      Storage
+        .find()
+        .where('_id')
+        .in(user.storages)
+        .exec()
+        .then(storages => res.json(storages));
+    });
 });
 
 storagesRouter.put('/stock/:id', (req, res) => {
@@ -35,12 +49,17 @@ storagesRouter.put('/stock/:id', (req, res) => {
   console.log('q', query);
 
   Storage.
-  findByIdAndUpdate(req.params.id, { $inc: query }, { new: true })
-  .then(updatedStorage =>{
-   console.log('u: ',updatedStorage)
-   res.json(updatedStorage)
-  });
+    findByIdAndUpdate(req.params.id, { $inc: query }, { new: true })
+    .then(updatedStorage => {
+      console.log('u: ', updatedStorage)
+      res.json(updatedStorage)
+    });
 
+});
+
+storagesRouter.delete('/single/:id', (req, res) => {
+  Storage.findByIdAndDelete(req.params.id)
+    .then(() => res.status(204).end())
 });
 
 export default storagesRouter;

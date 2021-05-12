@@ -11,7 +11,7 @@ usersRouter.get('/:name', (req, res) => {
     });
 });
 
-usersRouter.put('/:id', (req, res) => {
+usersRouter.put('/items/:id', (req, res) => {
   const newItem = req.body._id;
 
   User
@@ -20,13 +20,24 @@ usersRouter.put('/:id', (req, res) => {
 });
 
 usersRouter.delete('/items/:id/:itemid', (req, res) => {
-  console.log('usersItemDelete-id: ', req.params.id);
-  console.log('usersItemDelete-itemid: ', req.params.itemid);
-
   User
     .findByIdAndUpdate(req.params.id, { $pull: { items: req.params.itemid  } })
-    .then(() => res.status(204).end())
+    .then(() => res.status(204).end());
+});
 
-})
+usersRouter.put('/storages/:id', (req, res) => {
+  const newStorage = req.body._id;
+
+  User
+    .findByIdAndUpdate(req.params.id, { $push: { storages: newStorage } }, { new: true })
+    .then(updatedUser => res.json(updatedUser))
+});
+
+usersRouter.delete('/storages/:id/:storageid', (req, res) => {
+  User.findByIdAndUpdate(req.params.id, { $pull: { storages: req.params.storageid } })
+  .then(() => res.status(204).end());
+});
+
+
 
 export default usersRouter;
