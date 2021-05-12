@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
     minlenght: 5
   },
   storages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Storage' }],
-  items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }]
+  items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
+  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
 });
 
 export default mongoose.model('User', userSchema);
