@@ -29,4 +29,9 @@ categoriesRouter.post('/single', (req, res) => {
   })
 });
 
+categoriesRouter.delete('/single/:id', (req, res) => {
+  Category.findByIdAndDelete(req.params.id)
+    .then(() => res.status(204).end())
+});
+
 export default categoriesRouter;

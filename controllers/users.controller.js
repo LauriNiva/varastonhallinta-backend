@@ -46,5 +46,10 @@ usersRouter.put('/categories/:id', (req, res) => {
     .then(updatedUser => res.json(updatedUser));
 });
 
+usersRouter.delete('/categories/:id/:categoryid', (req, res) => {
+  User.findByIdAndUpdate(req.params.id, { $pull: { categories: req.params.categoryid } })
+    .then(() => res.status(204).end());
+});
+
 
 export default usersRouter;
