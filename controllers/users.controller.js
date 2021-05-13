@@ -21,7 +21,7 @@ usersRouter.put('/items/:id', (req, res) => {
 
 usersRouter.delete('/items/:id/:itemid', (req, res) => {
   User
-    .findByIdAndUpdate(req.params.id, { $pull: { items: req.params.itemid  } })
+    .findByIdAndUpdate(req.params.id, { $pull: { items: req.params.itemid } })
     .then(() => res.status(204).end());
 });
 
@@ -35,9 +35,16 @@ usersRouter.put('/storages/:id', (req, res) => {
 
 usersRouter.delete('/storages/:id/:storageid', (req, res) => {
   User.findByIdAndUpdate(req.params.id, { $pull: { storages: req.params.storageid } })
-  .then(() => res.status(204).end());
+    .then(() => res.status(204).end());
 });
 
+usersRouter.put('/categories/:id', (req, res) => {
+  const newCategory = req.body._id;
+
+  User
+    .findByIdAndUpdate(req.params.id, { $push: { categories: newCategory } }, { new: true })
+    .then(updatedUser => res.json(updatedUser));
+});
 
 
 export default usersRouter;

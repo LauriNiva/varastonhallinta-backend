@@ -16,4 +16,17 @@ categoriesRouter.get('/user/:userid', (req, res) => {
   });
 });
 
+categoriesRouter.post('/single', (req, res) => {
+  const body = req.body;
+  
+  const newCategory = new Category({
+    name: body.name
+  });
+
+  newCategory.save()
+  .then(savedCategory => {
+    res.json(savedCategory);
+  })
+});
+
 export default categoriesRouter;
