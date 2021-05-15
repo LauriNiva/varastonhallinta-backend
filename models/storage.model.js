@@ -6,6 +6,7 @@ const storageSchema = new mongoose.Schema({
     required: true
   },
   items: [{
+    id: { type: mongoose.Schema.Types.ObjectId },
     itemcode: { type: String},
     name: { type: String, required: true },
     category: { type: String, required: true },
