@@ -25,6 +25,7 @@ usersRouter.delete('/items/:id/:itemid', (req, res) => {
     .then(() => res.status(204).end());
 });
 
+//Add new storage to the user
 usersRouter.put('/storages/:id', (req, res) => {
   const newStorage = req.body._id;
 
@@ -38,6 +39,7 @@ usersRouter.delete('/storages/:id/:storageid', (req, res) => {
     .then(() => res.status(204).end());
 });
 
+//Add new category to the user
 usersRouter.put('/categories/:id', (req, res) => {
   const newCategory = req.body._id;
 
