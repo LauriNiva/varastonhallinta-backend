@@ -53,7 +53,7 @@ storagesRouter.post('/:id/items/', (req, res) => {
   };
 
   Storage.findByIdAndUpdate(req.params.id, { $push: { items: newItem } }, { new: true })
-  .then(updatedStorage => res.json(updatedStorage));
+    .then(updatedStorage => res.json(updatedStorage));
 
 });
 
@@ -64,33 +64,35 @@ storagesRouter.put('/stock/:id/:itemid/:change', (req, res) => {
   const itemId = req.params.itemid;
   const change = req.params.change;
 
-  if(change > 0){
+  if (change > 0) {
 
 
     Storage.
-    findOneAndUpdate({'_id': storageId, 'items.id' : itemId}, { $inc: {'items.$.stock': 1} }, { new: true })
-    .then(updatedStorage => {
-      console.log('u: ', updatedStorage)
-      res.json(updatedStorage)
-    });
-
-  }else{
-    Storage.findById(storageId)
-  .then(storage => storage.items.find(item=>item.id == itemId))
-  .then(item => {
-    if(item.stock > 0 ){
-      Storage.
-      findOneAndUpdate({'_id': storageId, 'items.id' : itemId}, { $inc: {'items.$.stock': -1} }, { new: true })
+      findOneAndUpdate({ '_id': storageId, 'items.id': itemId }, { $inc: { 'items.$.stock': 1 } }, { new: true })
       .then(updatedStorage => {
         console.log('u: ', updatedStorage)
         res.json(updatedStorage)
       });
-    }
-  });
+
+  } else {
+    Storage.findById(storageId)
+      .then(storage => storage.items.find(item => item.id == itemId))
+      .then(item => {
+        if (item.stock > 0) {
+          Storage.
+            findOneAndUpdate({ '_id': storageId, 'items.id': itemId }, { $inc: { 'items.$.stock': -1 } }, { new: true })
+            .then(updatedStorage => {
+              console.log('u: ', updatedStorage)
+              res.json(updatedStorage)
+            });
+        } else {
+          Storage.findById(storageId).then(storage => res.json(storage))
+        }
+      });
   }
 
-  
- 
+
+
 
   // Storage.findOne({})
 
