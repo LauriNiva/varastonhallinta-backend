@@ -31,7 +31,7 @@ usersRouter.put('/storages/:id', (req, res) => {
 
   User
     .findByIdAndUpdate(req.params.id, { $push: { storages: newStorage } }, { new: true })
-    .then(updatedUser => res.json(updatedUser))
+    .then(updatedUser => res.json(updatedUser));
 });
 
 usersRouter.delete('/storages/:id/:storageid', (req, res) => {

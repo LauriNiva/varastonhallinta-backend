@@ -27,6 +27,7 @@ storagesRouter.post('/single', (req, res) => {
 });
 
 storagesRouter.get('/user/:userid', (req, res) => {
+
   User.findById(req.params.userid)
     .then(user => {
       Storage
@@ -38,22 +39,72 @@ storagesRouter.get('/user/:userid', (req, res) => {
     });
 });
 
-storagesRouter.put('/stock/:id', (req, res) => {
+// Add item to the storage
+storagesRouter.post('/:id/items/', (req, res) => {
 
-  const itemIndex = req.body.itemIndex;
-  const newStock = req.body.newStock;
+  const body = req.body;
 
-  const query = {};
-  query[`items.${itemIndex}.stock`] = newStock;
+  const newItem = {
+    id: body._id,
+    itemcode: body.itemcode,
+    name: body.name,
+    category: body.category,
+    stock: 0
+  };
 
-  console.log('q', query);
+  Storage.findByIdAndUpdate(req.params.id, { $push: { items: newItem } }, { new: true })
+  .then(updatedStorage => res.json(updatedStorage));
 
-  Storage.
-    findByIdAndUpdate(req.params.id, { $inc: query }, { new: true })
+});
+
+// Update stock of the item
+storagesRouter.put('/stock/:id/:itemid/:change', (req, res) => {
+
+  const storageId = req.params.id;
+  const itemId = req.params.itemid;
+  const change = req.params.change;
+
+  if(change > 0){
+
+
+    Storage.
+    findOneAndUpdate({'_id': storageId, 'items.id' : itemId}, { $inc: {'items.$.stock': 1} }, { new: true })
     .then(updatedStorage => {
       console.log('u: ', updatedStorage)
       res.json(updatedStorage)
     });
+
+  }else{
+    Storage.findById(storageId)
+  .then(storage => storage.items.find(item=>item.id == itemId))
+  .then(item => {
+    if(item.stock > 0 ){
+      Storage.
+      findOneAndUpdate({'_id': storageId, 'items.id' : itemId}, { $inc: {'items.$.stock': -1} }, { new: true })
+      .then(updatedStorage => {
+        console.log('u: ', updatedStorage)
+        res.json(updatedStorage)
+      });
+    }
+  });
+  }
+
+  
+ 
+
+  // Storage.findOne({})
+
+  // const query = {};
+  // query[`items.${itemIndex}.stock`] = newStock;
+
+  // console.log('q', query);
+
+  // Storage.
+  //   findByIdAndUpdate(req.params.id, { $inc: query }, { new: true })
+  //   .then(updatedStorage => {
+  //     console.log('u: ', updatedStorage)
+  //     res.json(updatedStorage)
+  //   });
 
 });
 
