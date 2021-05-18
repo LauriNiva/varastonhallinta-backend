@@ -5,14 +5,14 @@ import User from '../models/user.model.js';
 const storagesRouter = express.Router();
 
 
-storagesRouter.get('/single/:id', (req, res) => {
+storagesRouter.get('/:id', (req, res) => {
   Storage
     .findById(req.params.id)
     .then(storage => res.json(storage))
     .catch();
 });
 
-storagesRouter.post('/single', (req, res) => {
+storagesRouter.post('/', (req, res) => {
   const body = req.body;
 
   const newStorage = new Storage({
@@ -26,6 +26,7 @@ storagesRouter.post('/single', (req, res) => {
 
 });
 
+//KUULUUKO TÄNNE VAI USER CONTROLLERIIN?
 storagesRouter.get('/user/:userid', (req, res) => {
 
   User.findById(req.params.userid)
@@ -82,23 +83,6 @@ storagesRouter.put('/:id/:itemid/:change', (req, res) => {
         }
       });
   }
-
-
-
-
-  // Storage.findOne({})
-
-  // const query = {};
-  // query[`items.${itemIndex}.stock`] = newStock;
-
-  // console.log('q', query);
-
-  // Storage.
-  //   findByIdAndUpdate(req.params.id, { $inc: query }, { new: true })
-  //   .then(updatedStorage => {
-  //     console.log('u: ', updatedStorage)
-  //     res.json(updatedStorage)
-  //   });
 
 });
 
