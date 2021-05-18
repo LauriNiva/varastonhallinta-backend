@@ -39,26 +39,18 @@ storagesRouter.get('/user/:userid', (req, res) => {
     });
 });
 
-// Add item to the storage
-storagesRouter.post('/:id/items/', (req, res) => {
+// Add items to the storage
+storagesRouter.post('/:id', (req, res) => {
 
-  const body = req.body;
+  const itemsToAdd = req.body;
 
-  const newItem = {
-    id: body._id,
-    itemcode: body.itemcode,
-    name: body.name,
-    category: body.category,
-    stock: 0
-  };
-
-  Storage.findByIdAndUpdate(req.params.id, { $push: { items: newItem } }, { new: true })
+  Storage.findByIdAndUpdate(req.params.id, { $push: { items: {$each: [...itemsToAdd] } } }, { new: true })
     .then(updatedStorage => res.json(updatedStorage));
 
 });
 
 // Update stock of the item
-storagesRouter.put('/stock/:id/:itemid/:change', (req, res) => {
+storagesRouter.put('/:id/:itemid/:change', (req, res) => {
 
   const storageId = req.params.id;
   const itemId = req.params.itemid;
@@ -68,7 +60,7 @@ storagesRouter.put('/stock/:id/:itemid/:change', (req, res) => {
 
 
     Storage.
-      findOneAndUpdate({ '_id': storageId, 'items.id': itemId }, { $inc: { 'items.$.stock': 1 } }, { new: true })
+      findOneAndUpdate({ '_id': storageId, 'items._id': itemId }, { $inc: { 'items.$.stock': 1 } }, { new: true })
       .then(updatedStorage => {
         console.log('u: ', updatedStorage)
         res.json(updatedStorage)
@@ -76,11 +68,11 @@ storagesRouter.put('/stock/:id/:itemid/:change', (req, res) => {
 
   } else {
     Storage.findById(storageId)
-      .then(storage => storage.items.find(item => item.id == itemId))
+      .then(storage => storage.items.find(item => item._id == itemId))
       .then(item => {
         if (item.stock > 0) {
           Storage.
-            findOneAndUpdate({ '_id': storageId, 'items.id': itemId }, { $inc: { 'items.$.stock': -1 } }, { new: true })
+            findOneAndUpdate({ '_id': storageId, 'items._id': itemId }, { $inc: { 'items.$.stock': -1 } }, { new: true })
             .then(updatedStorage => {
               console.log('u: ', updatedStorage)
               res.json(updatedStorage)
@@ -110,7 +102,7 @@ storagesRouter.put('/stock/:id/:itemid/:change', (req, res) => {
 
 });
 
-storagesRouter.delete('/single/:id', (req, res) => {
+storagesRouter.delete('/:id', (req, res) => {
   Storage.findByIdAndDelete(req.params.id)
     .then(() => res.status(204).end())
 });
