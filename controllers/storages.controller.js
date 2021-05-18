@@ -50,6 +50,12 @@ storagesRouter.post('/:id', (req, res) => {
 
 });
 
+//Delete single item from the storage
+storagesRouter.delete('/:id/:itemid', (req, res) => {
+  Storage.findByIdAndUpdate(req.params.id, { $pull: { items: { '_id': req.params.itemid } } })
+  .then(() => res.status(204).end());
+});
+
 // Update stock of the item
 storagesRouter.put('/:id/:itemid/:change', (req, res) => {
 
