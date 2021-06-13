@@ -19,6 +19,14 @@ const userSchema = new mongoose.Schema({
   categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
 });
 
+userSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject.__v
+    delete returnedObject.passwordHash
+  }
+})
+
 userSchema.plugin(uniqueValidator);
 
 export default mongoose.model('User', userSchema);
