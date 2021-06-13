@@ -1,11 +1,28 @@
 import User from '../models/user.model.js';
 import express from 'express';
+import bcrypt from 'bcrypt';
 
 const usersRouter = express.Router();
 
-usersRouter.get('/:name', (req, res) => {
+usersRouter.post('/', async (req, res) => {
+  const body = req.body;
+
+  const passwordHash = await bcrypt.hash(body.password, 10);
+
+  const user = new User({
+    username: body.username,
+    name: body.name,
+    passwordHash,
+  });
+
+  const savedUser = await user.save();
+
+  res.json(savedUser);
+});
+
+usersRouter.get('/:username', (req, res) => {
   User
-    .findOne({ name: req.params.name })
+    .findOne({ username: req.params.username })
     .then(user => {
       res.json(user);
     });
