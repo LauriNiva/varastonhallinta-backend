@@ -4,7 +4,7 @@ import express from 'express';
 
 const itemsRouter = express.Router();
 
-itemsRouter.get('/single/:id', (req, res) => {
+itemsRouter.get('/:id', (req, res) => {
   Item
     .findById(req.params.id)
     .then(item => res.json(item))
@@ -23,7 +23,7 @@ itemsRouter.get('/user/:userid', (req, res) => {
     });
 });
 
-itemsRouter.post('/single/', (req, res) => {
+itemsRouter.post('/', (req, res) => {
 
   const body = req.body;
 
@@ -35,11 +35,16 @@ itemsRouter.post('/single/', (req, res) => {
 
   newItem.save()
     .then(savedItem => {
-      res.json(savedItem);
+      User
+        .findByIdAndUpdate(req.user, { $push: { items: savedItem._id } }, { new: true })
+        .then(() =>{
+          res.json(savedItem);
+        })
+      
     });
 });
 
-itemsRouter.delete('/single/:id', (req, res) => {
+itemsRouter.delete('/:id', (req, res) => {
   Item.findByIdAndDelete(req.params.id)
     .then(() => res.status(204).end())
 });
