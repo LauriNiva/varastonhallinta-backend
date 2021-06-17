@@ -28,14 +28,6 @@ usersRouter.get('/:username', (req, res) => {
     });
 });
 
-usersRouter.put('/items/:id', (req, res) => {
-  const newItem = req.body._id;
-
-  User
-    .findByIdAndUpdate(req.params.id, { $push: { items: newItem } }, { new: true })
-    .then(updatedUser => res.json(updatedUser))
-});
-
 usersRouter.delete('/items/:id/:itemid', (req, res) => {
   User
     .findByIdAndUpdate(req.params.id, { $pull: { items: req.params.itemid } })
